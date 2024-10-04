@@ -1,3 +1,58 @@
-from django.shortcuts import render
+# analytics/views.py
+from django.shortcuts import render, redirect
+from .forms import DatasetUploadForm
+from .models import Dataset
+import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.express as px
+from sklearn.linear_model import LinearRegression
+import numpy as np
+from faker import Faker
 
-# Create your views here.
+# Generate sample data using Faker (for testing)
+def generate_sample_data():
+    fake = Faker()
+    data = {
+        "name": [fake.name() for _ in range(100)],
+        "age": [fake.random_int(min=18, max=80) for _ in range(100)],
+        "salary": [fake.random_int(min=30000, max=120000) for _ in range(100)],
+    }
+    return pd.DataFrame(data)
+
+def upload_dataset(request):
+    if request.method == "POST":
+        form = DatasetUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            dataset = form.save(commit=False)
+            dataset.user = request.user
+            dataset.save()
+            return redirect('dataset_list')
+    else:
+        form = DatasetUploadForm()
+    return render(request, 'upload.html', {'form': form})
+
+def dataset_list(request):
+    datasets = Dataset.objects.filter(user=request.user)
+    return render(request, 'dataset_list.html', {'datasets': datasets})
+
+def analyze_dataset(request, dataset_id):
+    dataset = Dataset.objects.get(id=dataset_id)
+    df = pd.read_csv(dataset.file.path)
+
+    # Example: Simple Linear Regression Analysis
+    if 'age' in df.columns and 'salary' in df.columns:
+        X = df[['age']]
+        y = df['salary']
+        model = LinearRegression()
+        model.fit(X, y)
+        predictions = model.predict(X)
+
+        # Plotting
+        plt.scatter(df['age'], df['salary'], color='blue')
+        plt.plot(df['age'], predictions, color='red')
+        plt.title('Age vs Salary')
+        plt.xlabel('Age')
+        plt.ylabel('Salary')
+        plt.savefig('static/age_salary_analysis.png')
+
+        return render(request, 'analysis_result.html', {'image_path': 'age_salary_analysis.png'})
