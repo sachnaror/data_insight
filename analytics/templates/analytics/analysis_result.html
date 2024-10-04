@@ -3,30 +3,42 @@
 {% load static %}  <!-- Load the static template tag library here -->
 
 {% block content %}
-    <h1>Analysis Result</h1>
+    <div class="container mt-5">
+        <h1 class="text-center">Analysis Result</h1>
 
-    {% if analysis_results %}
-        {% if analysis_results.description %}
-            <h3>Summary Statistics</h3>
-            {{ analysis_results.description|safe }}  <!-- Renders DataFrame as HTML -->
-        {% endif %}
+        {% if analysis_results %}
+            <div class="mt-4">
+                {% if analysis_results.description %}
+                    <h3>Summary Statistics</h3>
+                    <div class="table-responsive">
+                        {{ analysis_results.description|safe }}  <!-- Renders DataFrame as HTML -->
+                    </div>
+                {% endif %}
 
-        {% if analysis_results.correlation_matrix %}
-            <h3>Correlation Matrix</h3>
-            {{ analysis_results.correlation_matrix|safe }}  <!-- Renders Correlation matrix as HTML -->
-        {% endif %}
+                {% if analysis_results.correlation_matrix %}
+                    <h3>Correlation Matrix</h3>
+                    <div class="table-responsive">
+                        {{ analysis_results.correlation_matrix|safe }}  <!-- Renders Correlation matrix as HTML -->
+                    </div>
+                {% endif %}
 
-        {% if analysis_results.age_salary_correlation %}
-            <h3>Age-Salary Correlation</h3>
-            <p>Correlation between age and salary: {{ analysis_results.age_salary_correlation }}</p>
-        {% endif %}
+                {% if analysis_results.age_salary_correlation %}
+                    <h3>Age-Salary Correlation</h3>
+                    <p>Correlation between age and salary: <strong>{{ analysis_results.age_salary_correlation }}</strong></p>
+                {% endif %}
 
-        {% if analysis_results.regression_score %}
-            <h3>Linear Regression (Age vs Salary)</h3>
-            <p>R² score: {{ analysis_results.regression_score }}</p>
-            <img src="{% static analysis_results.regression_image_path %}" alt="Regression Plot">
+                {% if analysis_results.regression_score %}
+                    <h3>Linear Regression (Age vs Salary)</h3>
+                    <p>R² score: <strong>{{ analysis_results.regression_score }}</strong></p>
+                    <div class="text-center">
+                        <img src="{% static analysis_results.regression_image_path %}" alt="Regression Plot" class="img-fluid">
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                No analysis results available.
+            </div>
         {% endif %}
-    {% else %}
-        <p>No analysis results available.</p>
-    {% endif %}
+    </div>
 {% endblock %}

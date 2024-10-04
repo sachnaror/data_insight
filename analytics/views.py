@@ -200,3 +200,6 @@ def perform_analysis(df):
 def home_view(request):
     """Render the home page."""
     return render(request, 'analytics/home.html')
+
+def about(request):
+    return render(request, 'analytics/about.html')  # Assuming you have an about.html template

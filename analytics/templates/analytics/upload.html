@@ -1,17 +1,27 @@
-<!-- data_insight/analytics/templates/analytics/upload.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Dataset</title>
+    <!-- Load static files -->
+    {% load static %}
+    <!-- Link to Bootstrap CSS from CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" integrity="sha384-Lg1uZosX6H0Tg6UPuZ3gE6FYIXkwOjHQV/33wLboA30acjxH4JZfJY7y1KZ8sCbe" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Upload Dataset</h1>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Upload</button>
-    </form>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Upload Dataset</h1>
+        <form method="POST" enctype="multipart/form-data" class="border p-4 rounded shadow">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Load Bootstrap JS from CDN -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js" integrity="sha384-M6y3pT1ypn6FkF5tWCT2zKg+q8V1GAl3GDp4t/YBFJhcn3DW22GhS2iA5NYo40V9" crossorigin="anonymous"></script>
 </body>
 </html>
