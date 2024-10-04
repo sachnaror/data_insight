@@ -7,6 +7,11 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from faker import Faker
 import os
+from django.conf import settings
+
+# Use a non-interactive backend for script usage
+import matplotlib
+matplotlib.use('Agg')
 
 # Generate sample data using Faker (for testing)
 def generate_sample_data():
@@ -52,17 +57,18 @@ def analyze_dataset(request, dataset_id):
         predictions = model.predict(X)
 
         # Plotting
-        plt.scatter(df['age'], df['salary'], color='blue')
-        plt.plot(df['age'], predictions, color='red')
+        plt.scatter(df['age'], df['salary'], color='blue', label='Data Points')
+        plt.plot(df['age'], predictions, color='red', label='Regression Line')
         plt.title('Age vs Salary')
         plt.xlabel('Age')
         plt.ylabel('Salary')
+        plt.legend()
 
         # Save the plot to static directory
-        image_path = 'analytics/static/age_salary_analysis.png'
+        image_path = os.path.join(settings.STATIC_ROOT, 'analytics/plot.png')  # Using STATIC_ROOT
         plt.savefig(image_path)
         plt.close()  # Close the plot to free memory
 
-        return render(request, 'analytics/analysis_result.html', {'image_path': 'age_salary_analysis.png'})
+        return render(request, 'analytics/analysis_result.html', {'image_path': 'analytics/plot.png'})  # Adjust path for template
     else:
         return render(request, 'analytics/analysis_result.html', {'error': 'Required columns not found in dataset.'})
