@@ -1,2 +1,18 @@
-<h2>Analysis Result</h2>
-<img src="{% static '/Users/homesachin/Desktop/zoneone/practice/data_insight/analytics/static/plot.png' %}" alt="Plot">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h2>Analysis Result</h2>
+    {% if image_path %}
+        <img src="{% static image_path %}" alt="Analysis Plot">
+    {% else %}
+        <p>No analysis plot available.</p>
+    {% endif %}
+</body>
+</html>

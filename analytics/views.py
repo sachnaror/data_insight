@@ -1,4 +1,3 @@
-# data_insight/analytics/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import DatasetUploadForm
 from .models import Dataset
@@ -64,11 +63,14 @@ def analyze_dataset(request, dataset_id):
         plt.ylabel('Salary')
         plt.legend()
 
-        # Save the plot to static directory
-        image_path = os.path.join(settings.STATIC_ROOT, 'analytics/plot.png')  # Using STATIC_ROOT
+        # Save the plot to the static directory
+        image_path = os.path.join(settings.STATIC_ROOT, 'analytics/plot.png')  # Correct path without 'static'
         plt.savefig(image_path)
         plt.close()  # Close the plot to free memory
 
-        return render(request, 'analytics/analysis_result.html', {'image_path': 'analytics/plot.png'})  # Adjust path for template
+        # Get the image path to pass to the template
+        image_path_to_display = 'analytics/plot.png'  # Adjust path for template rendering
+
+        return render(request, 'analytics/analysis_result.html', {'image_path': 'analytics/plot.png'})
     else:
         return render(request, 'analytics/analysis_result.html', {'error': 'Required columns not found in dataset.'})
