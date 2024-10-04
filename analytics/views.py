@@ -1,13 +1,12 @@
-# analytics/views.py
-from django.shortcuts import render, redirect
+# data_insight/analytics/views.py
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import DatasetUploadForm
 from .models import Dataset
 import pandas as pd
 import matplotlib.pyplot as plt
-import plotly.express as px
 from sklearn.linear_model import LinearRegression
-import numpy as np
 from faker import Faker
+import os
 
 # Generate sample data using Faker (for testing)
 def generate_sample_data():
@@ -26,17 +25,22 @@ def upload_dataset(request):
             dataset = form.save(commit=False)
             dataset.user = request.user
             dataset.save()
-            return redirect('dataset_list')
+            return redirect('dataset_list')  # Ensure this name matches your URL pattern
     else:
         form = DatasetUploadForm()
-    return render(request, 'upload.html', {'form': form})
+    return render(request, 'analytics/upload.html', {'form': form})
 
 def dataset_list(request):
     datasets = Dataset.objects.filter(user=request.user)
-    return render(request, 'dataset_list.html', {'datasets': datasets})
+    return render(request, 'analytics/dataset_list.html', {'datasets': datasets})
 
 def analyze_dataset(request, dataset_id):
-    dataset = Dataset.objects.get(id=dataset_id)
+    dataset = get_object_or_404(Dataset, id=dataset_id)
+
+    # Ensure file exists before proceeding
+    if not os.path.exists(dataset.file.path):
+        return render(request, 'analytics/analysis_result.html', {'error': 'File not found.'})
+
     df = pd.read_csv(dataset.file.path)
 
     # Example: Simple Linear Regression Analysis
@@ -53,6 +57,12 @@ def analyze_dataset(request, dataset_id):
         plt.title('Age vs Salary')
         plt.xlabel('Age')
         plt.ylabel('Salary')
-        plt.savefig('static/age_salary_analysis.png')
 
-        return render(request, 'analysis_result.html', {'image_path': 'age_salary_analysis.png'})
+        # Save the plot to static directory
+        image_path = 'analytics/static/age_salary_analysis.png'
+        plt.savefig(image_path)
+        plt.close()  # Close the plot to free memory
+
+        return render(request, 'analytics/analysis_result.html', {'image_path': 'age_salary_analysis.png'})
+    else:
+        return render(request, 'analytics/analysis_result.html', {'error': 'Required columns not found in dataset.'})

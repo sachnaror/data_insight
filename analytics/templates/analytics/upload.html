@@ -1,0 +1,16 @@
+<!-- templates/analytics/upload.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Dataset</title>
+</head>
+<body>
+    <h1>Upload Dataset</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="dataset" required>
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
