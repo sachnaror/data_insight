@@ -1,0 +1,8 @@
+<h2>Your Datasets</h2>
+<ul>
+    {% for dataset in datasets %}
+        <li>
+            {{ dataset.name }} - <a href="{% url 'analyze_dataset' dataset.id %}">Analyze</a>
+        </li>
+    {% endfor %}
+</ul>
