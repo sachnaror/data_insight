@@ -63,14 +63,18 @@ def analyze_dataset(request, dataset_id):
         plt.ylabel('Salary')
         plt.legend()
 
+        # Ensure the directory exists for saving the plot
+        image_dir = os.path.join(settings.BASE_DIR, 'data_insight/staticfiles/analytics')
+        os.makedirs(image_dir, exist_ok=True)  # Create the directory if it doesn't exist
+
         # Save the plot to the static directory
-        image_path = os.path.join(settings.STATIC_ROOT, 'analytics/plot.png')  # Correct path without 'static'
+        image_path = os.path.join(image_dir, 'plot.png')
         plt.savefig(image_path)
         plt.close()  # Close the plot to free memory
 
         # Get the image path to pass to the template
-        image_path_to_display = 'analytics/plot.png'  # Adjust path for template rendering
+        image_path_to_display = os.path.join('analytics', 'plot.png')  # Adjust path for template rendering
 
-        return render(request, 'analytics/analysis_result.html', {'image_path': 'analytics/plot.png'})
+        return render(request, 'analytics/analysis_result.html', {'image_path': image_path_to_display})
     else:
         return render(request, 'analytics/analysis_result.html', {'error': 'Required columns not found in dataset.'})
