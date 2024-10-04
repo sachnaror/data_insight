@@ -128,3 +128,72 @@ def upload_and_analyze_dataset(request):
         form = DatasetUploadForm()
 
     return render(request, 'analytics/upload.html', {'form': form})
+
+def perform_analysis(df):
+    """Perform analysis on the given DataFrame and return the results."""
+    try:
+        # Check if the required columns exist for regression analysis
+        if 'age' in df.columns and 'salary' in df.columns:
+            # Perform Linear Regression (Age vs Salary as an example)
+            X = df[['age']]
+            y = df['salary']
+            model = LinearRegression()
+            model.fit(X, y)
+            predictions = model.predict(X)
+
+            # Calculate the regression score (R^2)
+            regression_score = model.score(X, y)
+
+            # Plot the regression line and data points
+            plt.scatter(df['age'], df['salary'], color='blue', label='Data Points')
+            plt.plot(df['age'], predictions, color='red', label='Regression Line')
+            plt.title('Age vs Salary Regression')
+            plt.xlabel('Age')
+            plt.ylabel('Salary')
+            plt.legend()
+
+            # Ensure the directory exists for saving the plot
+            image_dir = os.path.join(settings.BASE_DIR, 'data_insight/staticfiles/analytics')
+            os.makedirs(image_dir, exist_ok=True)
+
+            # Save the plot
+            image_path = os.path.join(image_dir, 'regression_plot.png')
+            plt.savefig(image_path)
+            plt.close()  # Close the plot to free memory
+
+            # Convert image path for template usage
+            regression_image_path = os.path.join('analytics', 'regression_plot.png')
+        else:
+            regression_score = None
+            regression_image_path = None
+
+        # Correlation matrix
+        correlation_matrix = df.corr()
+
+        # Example: You can also include correlation coefficients for specific pairs
+        if 'age' in df.columns and 'salary' in df.columns:
+            age_salary_correlation = df['age'].corr(df['salary'])
+        else:
+            age_salary_correlation = None
+
+        # Summary statistics
+        description = df.describe()  # Get summary statistics
+        column_names = df.columns.tolist()  # Get list of columns
+        head = df.head()  # Get the first few rows of the dataset
+
+        # Prepare the results in a format you want to pass to the template
+        analysis_results = {
+            'description': description.to_html(),  # Convert DataFrame to HTML for display
+            'column_names': column_names,
+            'head': head.to_html(),
+            'correlation_matrix': correlation_matrix.to_html(),  # Correlation matrix as HTML
+            'age_salary_correlation': age_salary_correlation,  # Correlation between age and salary
+            'regression_score': regression_score,  # R^2 score for regression
+            'regression_image_path': regression_image_path  # Path to regression plot image
+        }
+
+        return analysis_results
+
+    except Exception as e:
+        logger.error("Error during analysis: %s", str(e))
+        return {'error': 'Analysis failed due to an error.'}

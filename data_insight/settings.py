@@ -35,8 +35,8 @@ ROOT_URLCONF = 'data_insight.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [],  # You can add any additional directories here
+        'APP_DIRS': True,  # Make sure this is set to True
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -80,15 +80,21 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+import os  # Ensure you have this import at the top of your settings.py file
+
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Directory for your static files
+
+# Directory for your static files during development
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Example directory
+
+# Directory where static files will be collected for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Example directory
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Only for development
 if DEBUG:
-    STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Example additional static directory
-]
+    # You can keep STATICFILES_DIRS as is for development since it's already defined
+    pass

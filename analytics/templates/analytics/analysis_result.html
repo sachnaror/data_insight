@@ -1,10 +1,32 @@
-{% if analysis_results %}
-    <h2>Analysis Results</h2>
-    <ul>
-        {% for result in analysis_results %}
-            <li>{{ result }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No results available.</p>
-{% endif %}
+{% extends "base.html" %}
+
+{% load static %}  <!-- Load the static template tag library here -->
+
+{% block content %}
+    <h1>Analysis Result</h1>
+
+    {% if analysis_results %}
+        {% if analysis_results.description %}
+            <h3>Summary Statistics</h3>
+            {{ analysis_results.description|safe }}  <!-- Renders DataFrame as HTML -->
+        {% endif %}
+
+        {% if analysis_results.correlation_matrix %}
+            <h3>Correlation Matrix</h3>
+            {{ analysis_results.correlation_matrix|safe }}  <!-- Renders Correlation matrix as HTML -->
+        {% endif %}
+
+        {% if analysis_results.age_salary_correlation %}
+            <h3>Age-Salary Correlation</h3>
+            <p>Correlation between age and salary: {{ analysis_results.age_salary_correlation }}</p>
+        {% endif %}
+
+        {% if analysis_results.regression_score %}
+            <h3>Linear Regression (Age vs Salary)</h3>
+            <p>R² score: {{ analysis_results.regression_score }}</p>
+            <img src="{% static analysis_results.regression_image_path %}" alt="Regression Plot">
+        {% endif %}
+    {% else %}
+        <p>No analysis results available.</p>
+    {% endif %}
+{% endblock %}
