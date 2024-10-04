@@ -35,7 +35,7 @@ def upload_dataset(request):
             dataset.user = request.user
             dataset.save()
             logger.info("Dataset uploaded: %s", dataset.file.name)  # Log dataset upload
-            return redirect('dataset_list')  # Ensure this matches your URL pattern
+            return redirect('analytics:dataset_list')  # Ensure this matches your URL pattern
     else:
         form = DatasetUploadForm()
 
@@ -120,10 +120,9 @@ def upload_and_analyze_dataset(request):
 
             # Proceed with analysis
             df = pd.read_csv(dataset.file.path)
-            # Perform analysis and create results here...
+            analysis_results = perform_analysis(df)  # Call perform_analysis function
 
-            # Example: Simply redirecting to the dataset list after upload
-            return redirect('dataset_list')  # Change to the appropriate redirect as needed
+            return render(request, 'analytics/analysis_result.html', {'analysis_results': analysis_results})
     else:
         form = DatasetUploadForm()
 
@@ -197,3 +196,7 @@ def perform_analysis(df):
     except Exception as e:
         logger.error("Error during analysis: %s", str(e))
         return {'error': 'Analysis failed due to an error.'}
+
+def home_view(request):
+    """Render the home page."""
+    return render(request, 'analytics/home.html')

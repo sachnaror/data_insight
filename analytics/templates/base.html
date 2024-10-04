@@ -6,8 +6,8 @@
     <title>{% block title %}My Site{% endblock %}</title>
     <!-- Load static files -->
     {% load static %}
-    <!-- Link to Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Link to Bootstrap CSS from CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" integrity="sha384-Lg1uZosX6H0Tg6UPuZ3gE6FYIXkwOjHQV/33wLboA30acjxH4JZfJY7y1KZ8sCbe" crossorigin="anonymous">
     <!-- Your custom CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
@@ -15,6 +15,36 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'home' %}">My Site</a>
+                <a class="navbar-brand" href="{% url 'analytics:home' %}">My Site</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'analytics:home' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'analytics:about' %}">About</a>
+                        </li>
+                        <!-- Add more nav items as needed -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Main content will go here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My Site. All rights reserved.</p>
+    </footer>
+
+    <!-- Load Bootstrap JS from CDN -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js" integrity="sha384-M6y3pT1ypn6FkF5tWCT2zKg+q8V1GAl3GDp4t/YBFJhcn3DW22GhS2iA5NYo40V9" crossorigin="anonymous"></script>
+</body>
+</html>
