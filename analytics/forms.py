@@ -1,8 +1,12 @@
-# analytics/forms.py
 from django import forms
-from .models import Dataset
+from .models import Dataset  # Ensure you have the correct import
 
 class DatasetUploadForm(forms.ModelForm):
     class Meta:
-        model = Dataset
-        fields = ['name', 'file']
+        model = Dataset  # Use your actual model name
+        fields = ['file']  # Adjust fields according to your Dataset model
+
+class UploadFileForm(forms.Form):
+    file = forms.FileField()  # Simple file upload form
+
+

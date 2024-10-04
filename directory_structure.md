@@ -10,6 +10,7 @@
 │   │   ├── fake_user_data_99S2eYg.csv
 │   │   ├── fake_user_data_eRmt5YH.csv
 │   │   ├── fake_user_data_9RGDM4s.csv
+│   │   ├── fake_user_data_OcEY2Ob.csv
 │   │   ├── fake_user_data.csv
 │   │   └── fake_user_data_SYuodFt.csv
 │   ├── data_insight/
@@ -17,6 +18,9 @@
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   └── wsgi.py
+│   │   ├── staticfiles/
+│   │   │   ├── analytics/
+│   │   │   │   └── plot.png
 │   ├── staticfiles/
 │   │   └── plot.png
 │   │   ├── css/
@@ -165,6 +169,7 @@
 │   │   │   │   ├── gis/
 │   │   │   │   │   ├── move_vertex_on.svg
 │   │   │   │   │   └── move_vertex_off.svg
+│   │   └── analytics/
 │   ├── static/
 │   │   └── plot.png
 │   ├── analytics/
