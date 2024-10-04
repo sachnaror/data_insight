@@ -1,15 +1,16 @@
-<!-- templates/analytics/upload.html -->
+<!-- data_insight/analytics/templates/analytics/upload.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Dataset</title>
 </head>
 <body>
     <h1>Upload Dataset</h1>
-    <form method="post" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="dataset" required>
+        {{ form.as_p }}
         <button type="submit">Upload</button>
     </form>
 </body>
