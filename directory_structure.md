@@ -6,13 +6,8 @@
 │   ├── .env
 │   ├── manage.py
 │   ├── datasets/
-│   │   ├── fake_user_data_tMmlvAb.csv
-│   │   ├── fake_user_data_99S2eYg.csv
-│   │   ├── fake_user_data_eRmt5YH.csv
-│   │   ├── fake_user_data_9RGDM4s.csv
-│   │   ├── fake_user_data_OcEY2Ob.csv
-│   │   ├── fake_user_data.csv
-│   │   └── fake_user_data_SYuodFt.csv
+│   │   ├── fake_user_data_eVYHKGF.csv
+│   │   └── fake_user_data.csv
 │   ├── data_insight/
 │   │   ├── asgi.py
 │   │   ├── settings.py
@@ -169,9 +164,12 @@
 │   │   │   │   ├── gis/
 │   │   │   │   │   ├── move_vertex_on.svg
 │   │   │   │   │   └── move_vertex_off.svg
-│   │   └── analytics/
+│   │   ├── analytics/
+│   │   │   └── plot.png
 │   ├── static/
 │   │   └── plot.png
+│   │   ├── analytics/
+│   │   │   └── plot.png
 │   ├── analytics/
 │   │   ├── models.py
 │   │   ├── apps.py
